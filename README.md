@@ -1,5 +1,5 @@
 # Flyimg Docker Compose Setup
-This repository provides a Docker Compose configuration for deploying Flyimg with Docker. Flyimg is an image processing service that can resize, crop, and cache images.
+This repository provides a Docker Compose configuration for deploying [Flyimg](https://github.com/flyimg/flyimg) with Docker.
 
 # Configuration
 FLYIMG_SOURCE_TYPE: Set to local to use local storage.
