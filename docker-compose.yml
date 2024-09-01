@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  flyimg:
+    image: 'flyimg/flyimg:latest'
+    container_name: flyimg
+    environment:
+      FLYIMG_SOURCE_TYPE: local
+      FLYIMG_LOCAL_SOURCE_ROOT_PATH: /data
+      FLYIMG_DEFAULT_IMAGE: default.jpg
+      FLYIMG_CACHE_EXPIRY: 86400
+      FLYIMG_ENABLE_CACHE: true
+      FLYIMG_CACHE_DRIVER: redis
+      FLYIMG_CACHE_PREFIX: flyimg_cache
+    ports:
+      - '8081:80'
+    volumes:
+      - './data:/data'
+      - './flyimg_cache:/flyimg/cache'
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    networks:
+      - flyimg-network
+    depends_on:
+      - redis
+  redis:
+    image: 'redis:alpine'
+    container_name: redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis_data:/data'
+    networks:
+      - flyimg-network
+volumes:
+  redis_data:
+networks:
+  flyimg-network:
+    driver: bridge
